@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>assets/icons/ad_24dp_FFFFFF_FILL0_wght300_GRAD0_opsz24.svg</file>
+        <file>assets/icons/close_24dp_FFFFFF_FILL0_wght300_GRAD0_opsz24.svg</file>
+        <file>assets/icons/minimize_24dp_FFFFFF_FILL0_wght300_GRAD0_opsz24.svg</file>
+        <file>assets/icons/cabnet_logo_pink.svg</file>
+        <file>assets/icons/cabnet_logo_pink_full.svg</file>
+        <file>assets/icons/cabnet_logo_white.svg</file>
+        <file>assets/icons/cabnet_logo_white_full.svg</file>
+        <file>assets/icons/cabnet_logo_white_on_pink.svg</file>
+        <file>assets/icons/cabnet_logo_white_on_pink_full.svg</file>
+        <file>CabnetPlayerMenu.qml</file>
+        <file>TimecodeText.qml</file>
+        <file>assets/icons/audio_track_24dp_FFFFFF_FILL0_wght300_GRAD0_opsz24.svg</file>
+        <file>assets/icons/closed_caption_24dp_FFFFFF_FILL0_wght300_GRAD0_opsz24.svg</file>
+        <file>assets/icons/fullscreen_24dp_FFFFFF_FILL0_wght300_GRAD0_opsz24.svg</file>
+        <file>assets/icons/subtitles_24dp_FFFFFF_FILL0_wght300_GRAD0_opsz24.svg</file>
+        <file>assets/icons/volume_up_24dp_FFFFFF_FILL0_wght300_GRAD0_opsz24.svg</file>
+        <file>assets/icons/closed_caption_24dp_FFFFFF_FILL0_wght100_GRAD0_opsz24.svg</file>
+        <file>assets/icons/audio_track_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg</file>
+        <file>assets/icons/volume_up_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg</file>
+        <file>assets/icons/fullscreen_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg</file>
+        <file>assets/icons/closed_caption_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg</file>
+    </qresource>
+</RCC>
