@@ -22,5 +22,11 @@
         <file>assets/icons/volume_up_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg</file>
         <file>assets/icons/fullscreen_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg</file>
         <file>assets/icons/closed_caption_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg</file>
+        <file>assets/images/ponyo_barcode_fps1-36.png</file>
+        <file>assets/icons/play_arrow_24dp_FFFFFF_FILL1_wght200_GRAD0_opsz24.svg</file>
+        <file>assets/icons/play_arrow_24dp_FFFFFF_FILL1_wght700_GRAD0_opsz24.svg</file>
+        <file>assets/images/ponyo_barcode_fps1-48.png</file>
+        <file>assets/icons/play_arrow_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg</file>
+        <file>assets/icons/play_arrow_24dp_FFFFFF_FILL1_wght300_GRAD0_opsz24.svg</file>
     </qresource>
 </RCC>

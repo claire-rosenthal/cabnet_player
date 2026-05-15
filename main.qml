@@ -239,6 +239,7 @@ ApplicationWindow {
             }
 
             Rectangle {
+                id: timecode_section_box
                 height: 40
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -419,26 +420,121 @@ ApplicationWindow {
                     }
                 }
 
-                VectorImage  {
-                    id: volume_icon
-                    source: "qrc:///assets/icons/volume_up_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg"
-                    width: 24
-                    height: 24
-                    preferredRendererType: VectorImage.GeometryRenderer
+                Rectangle {
+                    id: volume_icon_box
+                    width: 30
+                    height: 30
+                    color: "#000000"
+                    border.color: "#8F8F8F"
+                    border.width: volume_icon_mouse_area.containsMouse ? 1 : 0 // shows the border during mouse hover
+
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenterOffset: 130
                     anchors.horizontalCenter: timecode_container.horizontalCenter
+
+                    VectorImage  {
+                        id: volume_icon
+                        source: "qrc:///assets/icons/volume_up_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg"
+                        width: 24
+                        height: 24
+                        preferredRendererType: VectorImage.GeometryRenderer
+
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+
+                    }
+
+                    MouseArea {
+                        id: volume_icon_mouse_area
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
                 }
 
-                VectorImage  {
-                    id: fullscreen_icon
-                    source: "qrc:///assets/icons/fullscreen_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg"
-                    width: 24
-                    height: 24
-                    preferredRendererType: VectorImage.GeometryRenderer
+                Rectangle {
+                    id: fulscreen_icon_box
+                    width: 30
+                    height: 30
+                    color: "#000000"
+                    border.color: "#8F8F8F"
+                    border.width: fulscreen_icon_mouse_area.containsMouse ? 1 : 0 // shows the border during mouse hover
+
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: volume_icon.right
+                    anchors.left: volume_icon_box.right
                     anchors.leftMargin: 30
+
+                    VectorImage  {
+                        id: fullscreen_icon
+                        source: "qrc:///assets/icons/fullscreen_24dp_FFFFFF_FILL0_wght200_GRAD0_opsz24.svg"
+                        width: 24
+                        height: 24
+                        preferredRendererType: VectorImage.GeometryRenderer
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+
+                    MouseArea {
+                        id: fulscreen_icon_mouse_area
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
+                }
+            }
+
+            Rectangle {
+                id: scubbing_bar_section_box
+                height: 20
+                color: "#000000"
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: timecode_section_box.top
+
+                Rectangle {
+                    id: play_button_box
+                    width: 30
+                    height: 30
+                    color: "#000000"
+                    border.color: "#8F8F8F"
+                    border.width: play_button_box_mouse_area.containsMouse ? 1 : 0 // shows the border during mouse hover
+
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+
+                    VectorImage {
+                        id: play_button_icon
+                        width: 30
+                        height: 30
+                        source: "qrc:///assets/icons/play_arrow_24dp_FFFFFF_FILL1_wght300_GRAD0_opsz24.svg"
+                        preferredRendererType: VectorImage.CurveRenderer
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.verticalCenter
+                    }
+
+                    MouseArea {
+                        id: play_button_box_mouse_area
+                        anchors.fill: parent
+                        hoverEnabled: true
+                    }
+                }
+
+                Image {
+                    id: ponyo_barcode_image
+                    height: 8
+                    source: "qrc:/assets/images/ponyo_barcode_fps1-48.png"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: play_button_box.right
+                    anchors.right: parent.right
+                }
+
+                Rectangle {
+                    id: scrubbing_marker
+                    height: 20
+                    width: 5
+                    color: "#FFFFFF"
+                    radius: 5
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.horizontalCenterOffset: -200
                 }
             }
         }
