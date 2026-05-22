@@ -255,6 +255,9 @@ ApplicationWindow {
 
                     MouseArea {
                         anchors.fill: parent
+                        onClicked: {
+                            mpv_renderer.command(["cycle", "pause"])
+                        }
                     }
                 }
             }
@@ -583,7 +586,14 @@ ApplicationWindow {
                     MouseArea {
                         id: barcode_image_mouse_area
                         anchors.fill: parent
+                        anchors.margins: -3
                         hoverEnabled: true
+                        onPositionChanged: {
+                            if(barcode_image_mouse_area.pressed) {
+                                mpv_renderer.command(["seek", mpv_renderer.secondsToTimecode((barcode_image_mouse_area.mouseX / ponyo_barcode_image.width) * (mpv_renderer.position + mpv_renderer.timeRemaining)) , "absolute"])
+                            }
+                        }
+
                         onClicked: {
                             mpv_renderer.command(["seek", mpv_renderer.secondsToTimecode((barcode_image_mouse_area.mouseX / ponyo_barcode_image.width) * (mpv_renderer.position + mpv_renderer.timeRemaining)) , "absolute"])
                         }
