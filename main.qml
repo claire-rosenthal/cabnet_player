@@ -589,7 +589,7 @@ ApplicationWindow {
                         anchors.margins: -3
                         hoverEnabled: true
                         onPositionChanged: {
-                            if(barcode_image_mouse_area.pressed) {
+                            if(barcode_image_mouse_area.pressed && barcode_image_mouse_area.containsMouse) {
                                 mpv_renderer.command(["seek", mpv_renderer.secondsToTimecode((barcode_image_mouse_area.mouseX / ponyo_barcode_image.width) * (mpv_renderer.position + mpv_renderer.timeRemaining)) , "absolute"])
                             }
                         }
