@@ -238,6 +238,28 @@ ApplicationWindow {
                 color: "#000000"
             }
 
+            // mpv section
+            Rectangle {
+                id: mpv_section_box
+                color: "#00FFFF"
+
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: scubbing_bar_section_box.top
+                anchors.bottomMargin: 2
+
+                MpvObject {
+                    id: mpv_renderer
+                    anchors.fill: parent
+
+                    MouseArea {
+                        anchors.fill: parent
+                    }
+                }
+            }
+
+            // timcode section
             Rectangle {
                 id: timecode_section_box
                 height: 40
@@ -254,10 +276,13 @@ ApplicationWindow {
                     anchors.horizontalCenterOffset: -20
                     anchors.verticalCenter: parent.verticalCenter
 
+                    // we get the digits for the timecode
+                    // from the video-frame-info/estimate-smtp-timecode property
+
                     // hour digit large
                     TimecodeText {
                         id: timecode_text_hour_digit_large
-                        text: "0"
+                        text: Math.floor(((mpv_renderer.position / 3600) % 60) / 10)
 
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: timecode_text_hour_digit_small.left
@@ -266,7 +291,7 @@ ApplicationWindow {
                     // hour digit small
                     TimecodeText  {
                         id: timecode_text_hour_digit_small
-                        text: "0"
+                        text: Math.floor(((mpv_renderer.position / 3600) % 60) % 10)
 
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: timecode_text_hour_minute_separator.left
@@ -285,7 +310,7 @@ ApplicationWindow {
                     // minute digit large
                     TimecodeText {
                         id: timecode_text_minute_digit_large
-                        text: "0"
+                        text: Math.floor(((mpv_renderer.position / 60) % 60) / 10)
 
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.left
@@ -294,7 +319,7 @@ ApplicationWindow {
                     // minite digit small
                     TimecodeText {
                         id: timecode_text_minute_digit_small
-                        text: "4"
+                        text: Math.floor(((mpv_renderer.position / 60) % 60) % 10)
 
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.right
@@ -313,7 +338,7 @@ ApplicationWindow {
                     // second digit large
                     TimecodeText {
                         id: timecode_text_second_digit_large
-                        text: "0"
+                        text: Math.floor((mpv_renderer.position % 60) / 10)
 
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: timecode_text_minute_second_separator.right
@@ -322,7 +347,7 @@ ApplicationWindow {
                     // second digit small
                     TimecodeText {
                         id: timecode_text_second_digit_small
-                        text: "4"
+                        text: Math.floor(mpv_renderer.position % 10)
 
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: timecode_text_second_digit_large.right
@@ -332,17 +357,19 @@ ApplicationWindow {
                     TimecodeText {
                         id: timecode_text_second_frame_separator
                         text: ":"
-                        font.pointSize: 13
+                        font.pointSize: 10
                         width: 6
 
                         anchors.baseline: timecode_text_second_digit_small.baseline
                         anchors.left: timecode_text_second_digit_small.right
+                        anchors.leftMargin: 1 // literally one pixel, but I feel it helps with the spacing
                     }
 
-                    // second:frame separator
+                    // frame digit large
                     TimecodeText {
                         id: timecode_text_frame_digit_large
-                        text: "1"
+                        text: Math.floor((mpv_renderer.estFrameNumber % Math.max(1, mpv_renderer.estVfFps)) / 10)
+                        // the Math.max function is there because %0 = NaN
                         font.pointSize: 13
                         width: 10
 
@@ -350,10 +377,10 @@ ApplicationWindow {
                         anchors.left: timecode_text_second_frame_separator.right
                     }
 
-                    // second:frame separator
+                    // frame digit small
                     TimecodeText {
                         id: timecode_text_frame_digit_small
-                        text: "3"
+                        text: Math.floor((mpv_renderer.estFrameNumber % Math.max(1, mpv_renderer.estVfFps)) % 10)
                         font.pointSize: 13
                         width: 10
 
@@ -388,8 +415,13 @@ ApplicationWindow {
                         id: caption_box_mouse_area
                         anchors.fill: parent
                         hoverEnabled: true
+                        onClicked: {
+                            mpv_renderer.command(["seek", "1:22:44", "absolute"])
+                        }
                     }
                 }
+
+                // TODO: add forward and back buttons to control section
 
                 Rectangle {
                     id: audio_track_box
@@ -477,10 +509,15 @@ ApplicationWindow {
                         id: fulscreen_icon_mouse_area
                         anchors.fill: parent
                         hoverEnabled: true
+                        onClicked: {
+                            mpv_renderer.command(["loadfile", "ponyo.mp4"])
+                        }
                     }
                 }
             }
 
+
+            // scrubbing bar section
             Rectangle {
                 id: scubbing_bar_section_box
                 height: 20
@@ -491,29 +528,33 @@ ApplicationWindow {
 
                 Rectangle {
                     id: play_button_box
-                    width: 30
-                    height: 30
+                    width: 24
+                    height: 24
                     color: "#000000"
                     border.color: "#8F8F8F"
                     border.width: play_button_box_mouse_area.containsMouse ? 1 : 0 // shows the border during mouse hover
 
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
+                    anchors.leftMargin: 1
 
                     VectorImage {
                         id: play_button_icon
-                        width: 30
-                        height: 30
-                        source: "qrc:///assets/icons/play_arrow_24dp_FFFFFF_FILL1_wght300_GRAD0_opsz24.svg"
+                        width: 14
+                        height: 14
+                        source: mpv_renderer.paused ? "qrc:///assets/icons/play_arrow_24dp_FFFFFF_FILL1_wght300_GRAD0_opsz24.svg" : "qrc:/assets/icons/pause_24dp_FFFFFF_FILL1_wght100_GRAD0_opsz24.svg"
                         preferredRendererType: VectorImage.CurveRenderer
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
                     }
 
                     MouseArea {
                         id: play_button_box_mouse_area
                         anchors.fill: parent
                         hoverEnabled: true
+                        onClicked: {
+                            onClicked: mpv_renderer.command(["cycle", "pause"])
+                        }
                     }
                 }
 
@@ -523,7 +564,30 @@ ApplicationWindow {
                     source: "qrc:/assets/images/ponyo_barcode_fps1-48.png"
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: play_button_box.right
+                    anchors.leftMargin: 1
                     anchors.right: parent.right
+
+                    Text {
+                        id: seekTimecodeText
+                        text: mpv_renderer.secondsToTimecode((barcode_image_mouse_area.mouseX / ponyo_barcode_image.width) * (mpv_renderer.position + mpv_renderer.timeRemaining));
+                        font.pointSize: 13
+                        color: "#FFFFFF"
+                        visible: barcode_image_mouse_area.containsMouse
+                        font.family: "Noto Sans"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.verticalCenterOffset: -15
+                        anchors.horizontalCenter: ponyo_barcode_image.left
+                        anchors.horizontalCenterOffset: barcode_image_mouse_area.containsMouse ? barcode_image_mouse_area.mouseX : 0
+                    }
+
+                    MouseArea {
+                        id: barcode_image_mouse_area
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked: {
+                            mpv_renderer.command(["seek", mpv_renderer.secondsToTimecode((barcode_image_mouse_area.mouseX / ponyo_barcode_image.width) * (mpv_renderer.position + mpv_renderer.timeRemaining)) , "absolute"])
+                        }
+                    }
                 }
 
                 Rectangle {
@@ -533,23 +597,13 @@ ApplicationWindow {
                     color: "#FFFFFF"
                     radius: 5
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.horizontalCenterOffset: -200
+                    anchors.left: ponyo_barcode_image.left
+                    anchors.leftMargin: ponyo_barcode_image.width * (mpv_renderer.percentPos / 100)
+                    // since percentPos is 0-100, have to divide by 100 to turn the value into 0-1
                 }
             }
         }
     }
-
-
-    // MpvObject {
-    //     id: renderer
-    //     anchors.fill: parent
-
-    //     MouseArea {
-    //         anchors.fill: parent
-    //         onClicked: renderer.command(["loadfile", "ponyo.mp4"])
-    //     }
-    // }
 
     // Rectangle {
     //     id: labelFrame

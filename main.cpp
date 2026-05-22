@@ -151,7 +151,56 @@ void MpvObject::command(const QVariant& params)
 
 void MpvObject::setProperty(const QString& name, const QVariant& value)
 {
-    mpv::qt::set_property_variant(mpv, name, value);
+    mpv::qt::set_property(mpv, name, value);
+}
+
+QVariant MpvObject::getProperty(const QString& name)
+{
+    return mpv::qt::get_property(mpv, name);
+}
+
+double MpvObject::position()
+{
+    return getProperty("time-pos").toDouble();
+}
+
+double MpvObject::timeRemaining()
+{
+    return getProperty("time-remaining").toDouble();
+}
+
+int MpvObject::estFrameNumber()
+{
+    return getProperty("estimated-frame-number").toInt();
+}
+
+int MpvObject::estVfFps()
+{
+    return getProperty("estimated-vf-fps").toInt();
+}
+
+bool MpvObject::paused()
+{
+    return getProperty("pause").toBool();
+}
+
+double MpvObject::percentPos()
+{
+    return getProperty("percent-pos").toDouble();
+}
+
+QString MpvObject::secondsToTimecode(double seconds)
+{
+    int hoursInt = (int)(std::round(seconds)) / 3600;
+    QString hoursString = QStringLiteral("%1").arg(hoursInt, 2, 10, QLatin1Char('0'));
+
+    int minutesInt = ((int)(std::round(seconds)) % 3600) / 60;
+    QString minutesString = QStringLiteral("%1").arg(minutesInt, 2, 10, QLatin1Char('0'));
+
+    int secondsInt = (int)(std::round(seconds)) % 60;
+    QString secondsString = QStringLiteral("%1").arg(secondsInt, 2, 10, QLatin1Char('0'));
+
+    return (hoursString + ":" + minutesString + ":" + secondsString);
 }
 
 QQuickFramebufferObject::Renderer *MpvObject::createRenderer() const
