@@ -607,8 +607,8 @@ ApplicationWindow {
                     color: "#FFFFFF"
                     radius: 5
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: ponyo_barcode_image.left
-                    anchors.leftMargin: ponyo_barcode_image.width * (mpv_renderer.percentPos / 100)
+                    anchors.horizontalCenter: ponyo_barcode_image.left
+                    anchors.horizontalCenterOffset: ponyo_barcode_image.width * (mpv_renderer.percentPos / 100)
                     // since percentPos is 0-100, have to divide by 100 to turn the value into 0-1
                 }
             }
